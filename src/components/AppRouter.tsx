@@ -1,17 +1,18 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { Route, Routes, useNavigate } from "react-router-dom" 
 import { privateRoutes, publicRoutes, RoutesNames } from '../router';
+import {useTypedSelector} from "../hooks/useTypedSelector"
 
 const AppRouter = () => {
-    const auth = true;
+    const {isAuth} = useTypedSelector( state => state.auth)
     const navigate = useNavigate();
 
     useEffect(()=>{
-        auth ? navigate(RoutesNames.EVENT) : navigate(RoutesNames.LOGIN)
-    },[auth, navigate])
+        isAuth ? navigate(RoutesNames.EVENT) : navigate(RoutesNames.LOGIN)
+    },[isAuth, navigate])
 
     return (
-        auth ? 
+        isAuth ? 
         <Routes>
             {privateRoutes.map( route => {
                 return <Route path={route.path} element={<route.component/>} key={route.path}/>
